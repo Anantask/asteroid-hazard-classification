@@ -11,6 +11,52 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 # Load the CSV stored beside app.py in the GitHub repository
+
+def prepare_data(raw_df):
+    """
+    Clean and validate the Near-Earth Object dataset.
+    Returns the cleaned DataFrame and an error message, if any.
+    """
+    df = raw_df.copy()
+
+    # Normalize column names
+    df.columns = df.columns.astype(str).str.strip()
+
+    # Check for the target column
+    if "pha" not in df.columns:
+        return None, (
+            "Required column 'pha' was not found. "
+            "Please check the CSV column names."
+        )
+
+    # Standardize PHA labels
+    df["pha"] = (
+        df["pha"]
+        .astype(str)
+        .str.strip()
+        .str.upper()
+    )
+
+    df = df[df["pha"].isin(["Y", "N"])].copy()
+
+    if df.empty:
+        return None, "No valid PHA labels (Y/N) were found in the dataset."
+
+    # Convert relevant orbital features to numeric when present
+    numeric_columns = [
+        "a", "e", "q", "i", "om", "w", "ad", "n",
+        "per", "per_y", "moid", "H"
+    ]
+
+    for col in numeric_columns:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+
+    df.reset_index(drop=True, inplace=True)
+
+    return df, None
+
+
 BASE_DIR = Path(__file__).resolve().parent
 DATA_PATH = BASE_DIR / "neos-asteroid dataset.csv"
 
