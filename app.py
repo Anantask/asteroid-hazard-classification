@@ -9,7 +9,7 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 # Load the CSV stored beside app.py in the GitHub repository.
-DATA_PATH = Path(__file__).parent / "neso.csv"
+DATA_PATH = Path(__file__).resolve().parent / "neos-asteroid dataset.csv"
 
 try:
     raw_df = pd.read_csv(DATA_PATH, low_memory=False)
