@@ -2,7 +2,12 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # SIDEBAR + AUTOMATIC DATASET LOADING
 # ─────────────────────────────────────────────────────────────────────────────
-
+from pathlib import Path
+import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
 # Load the CSV stored beside app.py in the GitHub repository.
 DATA_PATH = Path(__file__).parent / "neso.csv"
 
